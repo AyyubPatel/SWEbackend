@@ -1,35 +1,56 @@
 package cs474final.game;
+
+import java.util.Objects;
+//import cs474final.game.Move;
+
 /*
- * Game Piece class. Pieces are passive objects, in that they don't actually do anything to 
+ * Game Piece class. Pieces are passive objects, in that they don't actually do anything to
  * other piece objects. The game evaluates and controls interactions between pieces
-*/
+ */
 
 public class Piece{
-    boolean king;      //initialized to false, this value will be set by the game when it recognizes
-                       //that the required conditions are met
-    int [] location;   //location will be an array of two values between 0 and 7
-    private int team;  //team will be 0 or 1
+    private boolean king; //initialized to false, this value will be set by the
+                          //game when it recognizes that the required conditions are met
+    private int team;     //team will be 0 or 1, corresponds to dark or light respectively
+    final int pieceID;
+//    private Move moves;
 
-    public Piece(int [] location, final int team){
+    public Piece(final int team, final int pieceID){
         this.king = false;
-        this.location = location;
         this.team = team;
+        this.pieceID = pieceID;
     }
 
     public void kingMe(){
         this.king = true; //Pieces can only be kinged in one direction, don't need a reverse king method
     }
-
-    public void setLocation(int [] newLocation){
-        location[0] = newLocation[0]; //legal locations are handled by the game 
-        location[1] = newLocation[1]; //itself, not the pieces here
-    }
-    
-    public int [] getLocation(){
-        return location;
+    public boolean isKing(){
+        return king;
     }
 
     public int getTeam(){
         return team; //returns information about the team
-    } 
+    }
+
+    public int getPieceID(){
+        return pieceID;
+    }
+    /*
+     * Piece equality is contingent on team and ID equality,
+     * and king status (we will use this information in
+     * updating the pieces from board state to board state)
+     */
+    public boolean equals(Object o){
+        return (o != null) &&
+               (o instanceof Piece) &&
+               (this.getTeam() == ((Piece) o).getTeam()) &&
+               (this.getPieceID() == ((Piece) o).getPieceID()) &&
+               (this.isKing() == ((Piece) o).isKing());
+    }
+
+    public int hashCode() {
+        return Objects.hash(this.getPieceID(),
+                            this.getTeam(),
+                            this.isKing());
+    }
 }
