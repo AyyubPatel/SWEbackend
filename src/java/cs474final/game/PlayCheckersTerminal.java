@@ -1,6 +1,7 @@
 package cs474final.game;
 
 import cs474final.game.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
@@ -43,18 +44,36 @@ public class PlayCheckersTerminal{
 
                 /* Make a move */
                 int x1, x2, y1, y2;
-                boolean move;
+                boolean move = false;
                 do {
-                    System.out.println("Select piece by entering its location as <x> <y>");
-                    x1 = sc.nextInt();
-                    y1 = sc.nextInt();
-                    System.out.println("Make move by entering endpoint as <x> <y>");
-                    x2 = sc.nextInt();
-                    y2 = sc.nextInt();
-                    move = b0.makeMove(x1, y1, x2, y2);
-                    if (!move){
-                        System.out.println("Not a valid move, try another!");
-                    }
+                  System.out.println("Select piece by entering its location as <x> <y>");
+                  //Make sure the user doesn't try and input something bad
+                  while (true){
+                      if (sc.hasNextInt()) {x1 = sc.nextInt(); break;}
+                      else{sc.next(); continue;}
+                  }
+                  while (true){
+                      if (sc.hasNextInt()) {y1 = sc.nextInt(); break;}
+                      else{sc.next(); continue;}
+                  }
+
+
+                  System.out.println("Make move by entering endpoint as <x> <y>");
+                  //Make sure the user doesn't try and input something bad
+
+                  while (true){
+                      if (sc.hasNextInt()) {x2 = sc.nextInt(); break;}
+                      else{sc.next(); continue;}
+                  }
+                  while (true){
+                      if (sc.hasNextInt()) {y2 = sc.nextInt(); break;}
+                      else{sc.next(); continue;}
+                  }
+                  
+                  move = b0.makeMove(x1, y1, x2, y2);
+                  if (!move){
+                      System.out.println("Not a valid move, try another!");
+                  }
                 } while (!move); //Repeat if move is invalid
 
                 /* After the move */
@@ -74,14 +93,32 @@ public class PlayCheckersTerminal{
 
                 /* Make a move */
                 int x1, x2, y1, y2;
-                boolean move;
+                boolean move = false;
+
                 do {
                     System.out.println("Select piece by entering its location as <x> <y>");
-                    x1 = sc.nextInt();
-                    y1 = sc.nextInt();
+                    //Make sure the user doesn't try and input something bad
+                    while (true){
+                        if (sc.hasNextInt()) {x1 = sc.nextInt(); break;}
+                        else{sc.next(); continue;}
+                    }
+                    while (true){
+                        if (sc.hasNextInt()) {y1 = sc.nextInt(); break;}
+                        else{sc.next(); continue;}
+                    }
+
+
                     System.out.println("Make move by entering endpoint as <x> <y>");
-                    x2 = sc.nextInt();
-                    y2 = sc.nextInt();
+                    //Make sure the user doesn't try and input something bad
+
+                    while (true){
+                        if (sc.hasNextInt()) {x2 = sc.nextInt(); break;}
+                        else{sc.next(); continue;}
+                    }
+                    while (true){
+                        if (sc.hasNextInt()) {y2 = sc.nextInt(); break;}
+                        else{sc.next(); continue;}
+                    }
                     move = b1.makeMove(x1, y1, x2, y2);
                     if (!move){
                         System.out.println("Not a valid move, try another!");
