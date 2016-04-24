@@ -10,7 +10,7 @@ import cs474final.game.Piece;
 public class Board{
     final int size = 8; // We're only handling one checker board, and it's size 8x8.
 
-    Piece [][] locations = new Piece[size][size]; // sizexsize array with nothing in it
+    public Piece [][] locations = new Piece[size][size]; // sizexsize array with nothing in it
                                                   // Indexed [x, y] like cartesian coordinate system
     final int userTeam; //Will be 0 or 1
     //Board is created at the beginning of the game with default configuration
@@ -45,7 +45,7 @@ public class Board{
         locations[4][6] = new Piece(1, 5);
         locations[2][6] = new Piece(1, 6);
         locations[0][6] = new Piece(1, 7);
-        locations[5][7] = new Piece(1, 8);
+        locations[7][5] = new Piece(1, 8);
         locations[5][5] = new Piece(1, 9);
         locations[3][5] = new Piece(1, 10);
         locations[1][5] = new Piece(1, 11);
@@ -59,8 +59,15 @@ public class Board{
     public void updateBoard(Piece [][] newLocations){
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                if (!(this.locations[i][j].equals(newLocations[i][j]))){
-                    this.locations[i][j] = newLocations[i][j];
+                if (locations[i][j] == null){
+                    if (newLocations[i][j] != null){
+                        locations[i][j] = newLocations[i][j];
+                    }
+                }
+                else{
+                    if (!(locations[i][j].equals(newLocations[i][j]))){
+                        locations[i][j] = newLocations[i][j];
+                    }
                 }
             }
         }
@@ -72,14 +79,17 @@ public class Board{
      */
     public boolean makeMove(int x1, int y1, int x2, int y2){
         if (isValidMove(x1, y1, x2, y2)){
-            //Update location of moved piece
-            locations[x2][y2] = new Piece(locations[x1][y1].getTeam(),
-                                          locations[x1][y1].getPieceID());
-            locations[x1][y1] = null;
+            
             //See if we need to remove any pieces
             if (isJump(x1, y1, x2, y2)){
                 takePiece(x1, y1, x2, y2);
             }
+            //Update location of moved piece
+            locations[x2][y2] = new Piece(locations[x1][y1].getTeam(),
+                                          locations[x1][y1].getPieceID(),
+                                          locations[x1][y1].isKing());
+            locations[x1][y1] = null;
+
             //See if our noble piece should be crowned king
             if (locations[x2][y2].getTeam() == 0 && y2 == 7){
                 locations[x2][y2].kingMe();
@@ -234,15 +244,21 @@ public class Board{
      */
     public void printBoard(){
         System.out.println("________________");
-        for (int i = 0; i < size; i++){
+        for (int j = size-1; j >= 0; j--){ // Print from top to bottom
             System.out.print("|");
-            for (int j = size-1; j >= 0; j--){ // Print from top to bottom
+            for (int i = 0; i < size; i++){
                 //Empty Tile
                 if (locations[i][j] == null) System.out.print("_|");
                 //Dark Piece
-                else if (locations[i][j].getTeam() == 0) System.out.print("x|");
+                else if (locations[i][j].getTeam() == 0){
+                   if (!locations[i][j].isKing()) {System.out.print("x|");}
+                   else {System.out.print("X|");}
+                }
                 //Light Piece
-                else if (locations[i][j].getTeam() == 1) System.out.print("o|");
+                else if (locations[i][j].getTeam() == 1){
+                  if (!locations[i][j].isKing()) {System.out.print("o|");}
+                  else {System.out.print("O|");}
+                }
             }
         System.out.print("\n");
         }
@@ -260,4 +276,8 @@ public class Board{
     }
     */
 
+    public static void main(String [] args){
+        Board b = new Board(0);
+        b.printBoard();
+    }
 }

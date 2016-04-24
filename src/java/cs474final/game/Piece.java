@@ -21,6 +21,12 @@ public class Piece{
         this.pieceID = pieceID;
     }
 
+    public Piece(final int team, final int pieceID, boolean king){
+        this.king = king;
+        this.team = team;
+        this.pieceID = pieceID;
+    }
+
     public void kingMe(){
         this.king = true; //Pieces can only be kinged in one direction, don't need a reverse king method
     }

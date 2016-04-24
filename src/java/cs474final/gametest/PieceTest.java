@@ -7,7 +7,7 @@ public class PieceTest{
     Piece p1, p2, p3, p4, p5;
 
     @Before
-    void setUp(){
+    public void setUp(){
         p1 = new Piece(0, 3);
         p2 = new Piece(0, 3);
         p3 = new Piece(0, 3);
@@ -17,7 +17,7 @@ public class PieceTest{
     }
 
     @After
-    void tearDown(){
+    public void tearDown(){
         p1 = null;
         p2 = null;
         p3 = null;
@@ -25,19 +25,19 @@ public class PieceTest{
     }
 
     @Test
-    void testKing(){
+    public void testKing(){
         assertTrue(p1.isKing() == false);
         assertTrue(p3.isKing() == true);
     }
 
     @Test
-    void testGetters(){
+    public void testGetters(){
         assertTrue(p1.getTeam() == 0);
         assertTrue(p4.getPieceID() == 4);
     }
 
     @Test
-    void testEquals(){
+    public void testEquals(){
         assertTrue(p1.equals(p2));  //functionally identical
         assertFalse(p1.equals(p3)); //differ by king status
         assertFalse(p1.equals(p4)); //differ by pieceID
