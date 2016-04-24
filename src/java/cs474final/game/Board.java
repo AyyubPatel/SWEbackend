@@ -79,7 +79,7 @@ public class Board{
      */
     public boolean makeMove(int x1, int y1, int x2, int y2){
         if (isValidMove(x1, y1, x2, y2)){
-            
+
             //See if we need to remove any pieces
             if (isJump(x1, y1, x2, y2)){
                 takePiece(x1, y1, x2, y2);
@@ -100,7 +100,6 @@ public class Board{
             return true;
         }
         else{
-            System.out.println("Not a valid move, try another.");
             return false;
         }
     }
@@ -243,9 +242,9 @@ public class Board{
      * For testing purposes, may make its way into a test class.
      */
     public void printBoard(){
-        System.out.println("________________");
+        System.out.println(" ________________");
         for (int j = size-1; j >= 0; j--){ // Print from top to bottom
-            System.out.print("|");
+            System.out.print(j+"|");
             for (int i = 0; i < size; i++){
                 //Empty Tile
                 if (locations[i][j] == null) System.out.print("_|");
@@ -260,8 +259,9 @@ public class Board{
                   else {System.out.print("O|");}
                 }
             }
-        System.out.print("\n");
+            System.out.print("\n");
         }
+        System.out.println("  0 1 2 3 4 5 6 7 ");
     }
     /*
     public String locationsToJSON(){
