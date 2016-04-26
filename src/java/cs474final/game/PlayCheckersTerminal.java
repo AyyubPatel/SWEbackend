@@ -56,6 +56,8 @@ public class PlayCheckersTerminal{
                       if (sc.hasNextInt()) {y1 = sc.nextInt(); break;}
                       else{sc.next(); continue;}
                   }
+
+                  /* Clear out System.in buffer in case of inputs > 2 */
                   sc.nextLine();
 
                   System.out.println("Make move by entering endpoint as <x> <y>");
@@ -70,7 +72,10 @@ public class PlayCheckersTerminal{
                       if (sc.hasNextInt()) {y2 = sc.nextInt(); break;}
                       else{sc.next(); continue;}
                   }
+
+                  /* Clear out System.in buffer in case of inputs > 2 */
                   sc.nextLine();
+                  
                   move = b0.makeMove(x1, y1, x2, y2);
                   if (!move){
                       System.out.println("Not a valid move, try another!");
@@ -107,6 +112,8 @@ public class PlayCheckersTerminal{
                         if (sc.hasNextInt()) {y1 = sc.nextInt(); break;}
                         else{sc.next(); continue;}
                     }
+
+                    /* Clear out System.in buffer in case of inputs > 2 */
                     sc.nextLine();
 
                     System.out.println("Make move by entering endpoint as <x> <y>");
@@ -120,7 +127,10 @@ public class PlayCheckersTerminal{
                         if (sc.hasNextInt()) {y2 = sc.nextInt(); break;}
                         else{sc.next(); continue;}
                     }
+
+                    /* Clear out System.in buffer in case of inputs > 2 */
                     sc.nextLine();
+
                     move = b1.makeMove(x1, y1, x2, y2);
                     if (!move){
                         System.out.println("Not a valid move, try another!");
