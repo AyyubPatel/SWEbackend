@@ -6,7 +6,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class BoardTest{
-    Board b0, b1, b2; // Corresponds to different teams' board views
+    Board b0, b1, b2, b3, b4; // Corresponds to different teams' board views
     Piece [][] newLocations;
 
     @Before
@@ -14,6 +14,8 @@ public class BoardTest{
         b0 = new Board(0); //Team0 board
         b1 = new Board(1); //Team1 board
         b2 = new Board(1); //Team1 board
+        b3 = new Board(0); //Team0 board
+        b4 = new Board(1); //Team1 board
 
         //Set up sparser board for test cases. Assume updateBoard() method
         //works - we will also test this in a separate method.
@@ -25,18 +27,20 @@ public class BoardTest{
                 b0.locations[i][j] = null;
                 b1.locations[i][j] = null;
                 newLocations[i][j] = null;
+                b3.locations[i][j] = null;
+                b4.locations[i][j] = null;
             }
         }
 
         //Populate the new locations array with pieces
-        /* TODO good coverage will be:
+        /* Good legal move coverage requires:
          * 4 simple moves for team0 and team1, 2 by regular pieces, 2 by kings
          * 4 jump moves for team0 and team1, 2 by regular pieces, 2 by kings
-         * Come up with a creative way to make this flow naturally.
          */
          //For updateBoard Test
          newLocations[3][3] = new Piece(0, 5);
 
+         // For testComplexLegalMoves
          b0.locations[4][6] = new Piece(0, 0);
          b1.locations[4][6] = new Piece(0, 0);
 
@@ -57,6 +61,24 @@ public class BoardTest{
 
          b0.locations[5][5] = new Piece(1, 3);
          b1.locations[5][5] = new Piece(1, 3);
+
+         /*
+          * Good illegal move coverage requires:
+          * Out of bounds move attempt, 'friendly fire' jump move, simple
+          * move to occupied location, greater than two space move attempt,
+          * move to the starting location, backwards move by normal piece.
+          */
+
+          //For testIllegalMoves
+          b3.locations[7][2] = new Piece(0, 0);
+          b4.locations[7][2] = new Piece(0, 0);
+
+          b3.locations[6][3] = new Piece(0, 1);
+          b4.locations[6][3] = new Piece(0, 1);
+
+          b3.locations[3][5] = new Piece(1, 0);
+          b4.locations[3][5] = new Piece(1, 0);
+
     }
 
     @After
@@ -92,6 +114,54 @@ public class BoardTest{
     @Test
     public void testIllegalMoves(){
         //TODO write tests for a series of moves
+        //The board state will look like this the entire time.
+        /*  ________________
+          7|_|_|_|_|_|_|_|_|
+          6|_|_|_|_|_|_|_|_|
+          5|_|_|_|o|_|_|_|_|
+          4|_|_|_|_|_|_|_|_|
+          3|_|_|_|_|_|_|x|_|
+          2|_|_|_|_|_|_|_|x|
+          1|_|_|_|_|_|_|_|_|
+          0|_|_|_|_|_|_|_|_|
+            0 1 2 3 4 5 6 7
+       */
+
+       //Out of bounds move
+       boolean move = b3.makeMove(7, 2, 8, 3);
+       assertFalse(move);
+       assertTrue(b3.locations[7][2].equals(new Piece(0, 0))); //Piece not moved
+
+       //Friendly fire move
+       move = b3.makeMove(7, 2, 5, 4);
+       assertFalse(move);
+       assertTrue(b3.locations[7][2].equals(new Piece(0, 0))); //Piece not moved
+       assertTrue(b3.locations[6][3].equals(new Piece(0, 1))); //Piece not taken
+       assertTrue(b3.locations[5][4] == null); //Piece not moved
+
+       //Simple move to blocked tile
+       move = b3.makeMove(7, 2, 6, 3);
+       assertFalse(move);
+       assertTrue(b3.locations[7][2].equals(new Piece(0, 0))); //Piece not moved
+       assertTrue(b3.locations[6][3].equals(new Piece(0, 1))); //Piece not taken
+
+       //Move to same spot
+       move = b3.makeMove(7, 2, 7, 2);
+       assertFalse(move);
+       assertTrue(b3.locations[7][2].equals(new Piece(0, 0))); //Piece hasn't vanished
+
+       //Normal team 0 piece move backwards
+       move = b3.makeMove(7, 2, 6, 1);
+       assertFalse(move);
+       assertTrue(b3.locations[7][2].equals(new Piece(0, 0))); //Piece not moved
+       assertTrue(b3.locations[6][1] == null); //Piece not moved
+
+       //Normal team 1 piece move backwards
+       move = b4.makeMove(3, 5, 4, 6);
+       assertFalse(move);
+       assertTrue(b4.locations[3][5].equals(new Piece(1, 0))); //Piece not moved
+       assertTrue(b4.locations[4][6] == null); //Piece not moved
+
     }
 
     @Test

@@ -137,6 +137,10 @@ public class Board{
             x2 < 0 || x2 >= size || y2 < 0 || y2 >= size){
                 return false; // At least one move location is out of bounds
         }
+
+        else if(x1 == x2 && y1 == y2){
+            return false; // Move has to result in changed locations
+        }
         else{
             // Check initial location
             if (locations[x1][y1] == null) {return false;}
